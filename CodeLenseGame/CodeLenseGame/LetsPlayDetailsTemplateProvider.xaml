@@ -1,0 +1,12 @@
+﻿<editor:DetailsTemplateProvider x:Class="CodeLenseGame.LetsPlayDetailsTemplateProvider"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:editor="clr-namespace:Microsoft.VisualStudio.CodeSense.Editor;assembly=Microsoft.VisualStudio.CodeSense"
+             xmlns:codeLenseGame="clr-namespace:CodeLenseGame"
+             mc:Ignorable="d">
+    <DataTemplate>
+        <codeLenseGame:GameView Width="450" Height="450"/>
+    </DataTemplate>
+</editor:DetailsTemplateProvider>

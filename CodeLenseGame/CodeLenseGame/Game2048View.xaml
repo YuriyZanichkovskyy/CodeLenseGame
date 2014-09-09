@@ -1,0 +1,72 @@
+﻿<UserControl x:Class="CodeLenseGame.GameView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:codeLenseGame="clr-namespace:CodeLenseGame"
+             mc:Ignorable="d" VerticalAlignment="Center">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"
+                    VerticalAlignment="Bottom"
+                    TextBlock.FontSize="25"
+                    TextBlock.Foreground="White">
+            <TextBlock>Score:</TextBlock>
+            <TextBlock Text="{Binding Path=GameModel.Score}"/>
+        </StackPanel>
+        <Border CornerRadius="4" Background="#BDAEA5" Width="350" Height="350" Grid.Row="1">
+            <Border.Resources>
+                <codeLenseGame:CellValueToColorConverter x:Key="ForegroundColorConverter" ForegroundColor="True"/>
+                <codeLenseGame:CellValueToColorConverter x:Key="BackgroundColorConverter"/>
+            </Border.Resources>
+            <ItemsControl ItemsSource="{Binding GameModel.Cells}" Margin="10" Background="White"
+                      FocusVisualStyle="{x:Null}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Grid codeLenseGame:Game2048.IsGameGrid="True" Background="#BDAEA5"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border CornerRadius="4" Background="{Binding Path=Value, Converter={StaticResource BackgroundColorConverter}}" Margin="3"
+                            x:Name="BackgroundBorder">
+                            <TextBlock Text="{Binding Path=Value, Mode=OneWay}" 
+                                   Foreground="{Binding Path=Value, Converter={StaticResource ForegroundColorConverter}}"
+                                   x:Name="ValueTextBlock"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   FontSize="25" TextOptions.TextRenderingMode="ClearType"></TextBlock>
+                        </Border>
+                        <DataTemplate.Triggers>
+                            <DataTrigger Binding="{Binding Path=IsEmpty}" Value="True">
+                                <Setter Property="Background" Value="#CEC3B5" TargetName="BackgroundBorder"></Setter>
+                                <Setter Property="Foreground" Value="#CEC3B5" TargetName="ValueTextBlock"></Setter>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Path=IsEmpty}" Value="False">
+                                <DataTrigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetProperty="Opacity" 
+                                                             Storyboard.TargetName="BackgroundBorder"
+                                                             From="0" To="1" Duration="0:0:0.5"  
+                                                             AutoReverse="False"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.EnterActions>
+                            </DataTrigger>
+                        </DataTemplate.Triggers>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+                <ItemsControl.ItemContainerStyle>
+                    <Style>
+                        <Setter Property="Grid.Row" Value="{Binding Y}"></Setter>
+                        <Setter Property="Grid.Column" Value="{Binding X}"></Setter>
+                    </Style>
+                </ItemsControl.ItemContainerStyle>
+            </ItemsControl>
+        </Border>
+    </Grid>
+</UserControl>
